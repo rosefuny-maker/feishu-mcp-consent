@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>连接 Feishu MCP</title>
+<style>
+  body{margin:0;font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#f5f6f7;color:#1f2329;display:flex;min-height:100vh;align-items:center;justify-content:center}
+  main{background:#fff;border-radius:12px;padding:32px 36px;max-width:440px;width:100%;box-shadow:0 1px 4px rgba(31,35,41,.08)}
+  h1{font-size:20px;margin:0 0 12px}
+  p{font-size:14px;line-height:1.7;margin:8px 0}
+  code{background:#f2f3f5;padding:1px 5px;border-radius:4px}
+  label{display:block;font-size:14px;margin:16px 0 6px}
+  input[type=password]{width:100%;box-sizing:border-box;padding:9px 12px;border:1px solid #d0d3d6;border-radius:8px;font-size:15px}
+  button{margin-top:18px;width:100%;padding:10px;border:0;border-radius:8px;background:#3370ff;color:#fff;font-size:15px;cursor:pointer}
+  .muted{color:#646a73;font-size:12px}
+  .hidden{display:none}
+</style>
+</head>
+<body>
+<main>
+  <h1>连接 Feishu MCP</h1>
+  <p id="msg">一个客户端请求访问 <code>Feishu MCP</code>（将以「ChatGPT 飞书助手」应用身份管理多维表格）。请输入部署者提供的 <strong>连接授权码</strong> 完成授权。</p>
+  <form id="f" method="post" action="https://ingyzpbpnvnqlqkmxmqd.supabase.co/functions/v1/feishu-mcp/approve">
+    <input type="hidden" name="tx" id="tx">
+    <label for="code">连接授权码</label>
+    <input id="code" name="code" type="password" autocomplete="off" required autofocus>
+    <button type="submit" id="btn">授权并连接</button>
+  </form>
+  <p class="muted hidden" id="note"></p>
+</main>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  var tx = q.get("tx") || "";
+  document.getElementById("tx").value = tx;
+  if (!tx || tx.length < 40) {
+    document.getElementById("msg").textContent = "链接无效或已过期，请回到 ChatGPT 重新发起连接。";
+    document.getElementById("f").classList.add("hidden");
+  }
+})();
+</script>
+</body>
+</html>
